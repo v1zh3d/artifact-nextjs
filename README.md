@@ -1,8 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project with [Tailwind CSS](https://tailwindcss.com) as CSS pre-processor, [Shadcn UI](https://ui.shadcn.com) components and [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) for form handling and validation.
 
-## Getting Started
+## Deployed URL
 
-First, run the development server:
+[https://artifact-nextjs.vercel.app/](https://artifact-nextjs.vercel.app/)
+
+## Run it Locally
+
+First, clone the repository in your system
+
+```bash
+git clone https://github.com/v1zh3d/artifact-nextjs.git
+```
+
+Second, install project dependencies
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+Third, run the development server:
 
 ```bash
 npm run dev
@@ -16,21 +38,29 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Explanation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This project is just a small example of persistent state management and API data fetching.
 
-## Learn More
+It has a single page that is the `root (/)` route page. The page consists of:
 
-To learn more about Next.js, take a look at the following resources:
+- Navbar to add **Authorization token** and **Theme toggle button**
+- User profile form having input such as **Full Name**, **Username**, **Email**, **Gender**, **Age**, **Location**, **Avatar URI** and **Interests**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+In this user form priority is given to local state where on any form change its value is stored in browser `localStorage`. If any state persists in `localStorage`, no user API call would happen which would reduce server call.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Location API is implemented to pre-fill user's current location and modify to save into `localStorage`.
 
-## Deploy on Vercel
+### Helper Function
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Two major helper functions are used:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `cn()`: This function takes classNames as input and merge it using `twMerge` functionality in Tailwind CSS.
+- `checkObjectValues()`: This function is used to check if an object has keys and its keys have any value in it by checking if its empty, undefined or length greater than 0 (for arrays). It is being used to check if `localStorage` user data object has any value or not.
+
+### APIs
+
+Only two APIs are there:
+
+- `getUserLocation()`: Which fetch user's location using [Abstract IP Geolocation](https://www.abstractapi.com/api/ip-geolocation-api) third-party service.
+- `getUserProfile()`: Which fetch user's profile details using [Artifact](https://gotartifact.com) user details API which take **Authorization** token in request headers.
